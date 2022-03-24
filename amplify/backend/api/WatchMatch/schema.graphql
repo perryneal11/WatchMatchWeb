@@ -1,0 +1,18 @@
+type Friendship @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  requestAccepted: Boolean
+  Receiver: User! @hasOne
+  Sender: User! @hasOne
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Netflix: Boolean
+  Prime: Boolean
+  approvedContentIMDBID: [AWSJSON]
+  unapprovedContentIMDBID: [AWSJSON]
+  friends: [String]
+  username: String!
+  awsID: String!
+}
+  
