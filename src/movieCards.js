@@ -19,8 +19,6 @@ function MovieCards(props) {
   ]);
 
   return (
-    <div>
-      <h1>Cards</h1>
       <div className="card_container">
       {movies.map((movie) => (
         <TinderCard className="swipe" key={movies.name} preventSwipe={["up", "down"]}>
@@ -31,7 +29,6 @@ function MovieCards(props) {
           </div>
         </TinderCard>
       ))}
-    </div>
     </div>
   );
   

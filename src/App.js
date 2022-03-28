@@ -39,9 +39,7 @@ function App() {
           {/* friends screen */}
           {/* watchmatch screen */}
 
-          <button onClick={signOut} className="signOutButton">
-            SignOut
-          </button>
+
         </div>
       )}
     </Authenticator>
