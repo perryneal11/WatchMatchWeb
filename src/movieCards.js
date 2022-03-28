@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TinderCard from "react-tinder-card";
-import './MovieCards.css'
+import "./MovieCards.css";
 
 function MovieCards(props) {
   const [movies, setMovies] = useState([
@@ -19,19 +19,34 @@ function MovieCards(props) {
   ]);
 
   return (
-      <div className="card_container">
+    <div className="card_container">
       {movies.map((movie) => (
-        <TinderCard className="swipe" key={movies.name} preventSwipe={["up", "down"]}>
-          <div 
-          style={{ backgroundImage: `url(${movie.url})` }} 
-          className="card">
-              <h3>{movie.name}</h3>
+        <TinderCard
+          className="swipe"
+          key={movies.name}
+          preventSwipe={["up", "down"]}
+        >
+          <div
+            style={{ backgroundImage: `url(${movie.url})` }}
+            className="card"
+          >
+            <h3>{movie.name}</h3>
+            <iframe
+              className="trailer"
+              width="425"
+              height="240"
+              src={`https://www.youtube.com/embed/v7v1hIkYH24`}
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title="Embedded youtube"
+              
+            />
           </div>
         </TinderCard>
       ))}
     </div>
   );
-  
 }
 
 export default MovieCards;
