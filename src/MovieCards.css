@@ -2,10 +2,11 @@
     margin: 20px;
     display: flex;
     justify-content: center;
-    margin-top: 10vh;
+    margin: 10vh;
 }
 
 .card{
+    background-color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +14,7 @@
     width: 900px;
     padding: 3px;
     max-width: 85vw;
-    height: 50vh;
+    height: 80vh;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
@@ -25,6 +26,13 @@
     text-align: center;
     justify-content: center;
 
+}
+
+.card > p {
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .trailer{
