@@ -42,11 +42,6 @@ function MovieCards(props) {
     console.log('movies', movies.map(m => m?.title)) 
   }, [movies]);
 
-  useEffect(() => {
-    console.log('Moiwefngjaoei', props.movies)
-    console.log('current index', currentIndex)
-    console.log('nextIndex', currentIndex + 2)
-  }, [currentIndex]);
 
   const save = async (newIMDBID, approved) => {
     const updateUser = User.copyOf(user, (updated) => {
@@ -69,6 +64,7 @@ function MovieCards(props) {
 
   return (
     <div className="card_container">
+      
       {movies.reverse().map((movies, index) => (
         <TinderCard
           className="swipe"
@@ -84,7 +80,7 @@ function MovieCards(props) {
               className="trailer"
               width="425"
               height="240"
-              src={`https://www.youtube.com/embed/${movies.video}`}
+              src={`https://www.youtube.com/embed/${movies.video}?autoplay=${index == 2 || index == 3 ? 1 : 0}`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

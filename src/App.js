@@ -5,6 +5,7 @@ import "@aws-amplify/ui-react/styles.css";
 import Header from "./Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieCards from "./movieCards";
+import { Link } from "react-router-dom";
 
 function App(props) {
   const [movieData, setMovieData] = React.useState([]);
@@ -86,8 +87,11 @@ function App(props) {
 
   return (
     <div className="App">
-      <Header />
+
       <Router>
+
+      <Header />
+ 
         <Routes>
           <Route path="/profile" element={<h>hello from profile screen</h>} />
           <Route
