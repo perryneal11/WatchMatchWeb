@@ -33,7 +33,7 @@ function App(props) {
   };
 
   const sendMovieDataToCards = () => {
-    setMovieDataForCards(movieData.slice(1,3));
+    setMovieDataForCards(movieData);
   };
 
   const filterMovieData = () => {

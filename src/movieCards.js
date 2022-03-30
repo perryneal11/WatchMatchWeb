@@ -8,25 +8,33 @@ import { User } from "./models";
 function MovieCards(props) {
   const user = props.user;
 
-  const [movies, setMovies] = useState(props.movies);
+  const [movies, setMovies] = useState([]);
+  const [currentIndex, setCurrentIndex] = React.useState(0)
   const [currentMovie, setCurrentMovie] = React.useState();
 
 
   const onSwipe = (direction) => {
     //console.log('You swiped: ' + direction)
     if (direction == 'left'){
-      save(currentMovie, false);
+      //save(currentMovie, false);
     } else if (direction == 'right'){
-      save(currentMovie, true);
+      //save(currentMovie, true);
     }
   }
   
   const onCardLeftScreen = (myIdentifier) => {
-    console.log(myIdentifier + ' left the screen')
+
+    setCurrentIndex(prevIndex => (currentIndex + 1))
+    console.log('movies length?', movies.length)
+    setMovies(prevMovies => ([...prevMovies, ...props.movies.slice(currentIndex, currentIndex+1)]));
   }
   useEffect(() => {
-    setMovies(props.movies)
+    setMovies(props.movies.slice(1, 10))
   }, [props.movies])
+
+  useEffect(() => {
+    console.log('movies', movies) 
+  }, [movies]);
 
   const save = async (newIMDBID, approved) => {
     const updateUser = User.copyOf(user, (updated) => {
@@ -49,16 +57,16 @@ function MovieCards(props) {
 
   return (
     <div className="card_container">
-      {console.log(props.movies)}
-      {movies.map((movies) => (
+      {movies.map((movies, index) => (
         <TinderCard
           className="swipe"
-          key={movies}
+          key={movies.index}
           preventSwipe={["up", "down"]}
           onSwipe={onSwipe}
+          onCardLeftScreen={onCardLeftScreen}
         >
           <div className="card" key={movies.backdropPath}>
-            <h3 key={movies.title}>{movies.title}</h3>
+            <h3>{movies.title}</h3>
             <iframe
               key={movies.video}
               className="trailer"
@@ -70,7 +78,7 @@ function MovieCards(props) {
               allowFullScreen
               title="Embedded youtube"
             />
-            <p key = {movies.id}>{movies.overview}</p>
+            <p>{movies.overview}</p>
           </div>
         </TinderCard>
       ))}
