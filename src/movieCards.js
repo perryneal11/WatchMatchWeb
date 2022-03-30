@@ -23,18 +23,30 @@ function MovieCards(props) {
   }
   
   const onCardLeftScreen = (myIdentifier) => {
+    if (currentIndex == 0){
+      setCurrentIndex(prevIndex => (prevIndex + 4))
+      console.log('hit')
+    } else {
+      setCurrentIndex(prevIndex => (prevIndex + 1))
+    }
 
-    setCurrentIndex(prevIndex => (currentIndex + 1))
-    console.log('movies length?', movies.length)
-    setMovies(prevMovies => ([...prevMovies, ...props.movies.slice(currentIndex, currentIndex+1)]));
+    setMovies(prevMovies=> ([prevMovies.pop()]))
+    setMovies(prevMovies => ([...prevMovies, ...props.movies.slice(currentIndex, currentIndex+2)]));
+ 
   }
   useEffect(() => {
-    setMovies(props.movies.slice(1, 10))
+    setMovies(props.movies.slice(currentIndex, currentIndex+4))
   }, [props.movies])
 
   useEffect(() => {
-    console.log('movies', movies) 
+    console.log('movies', movies.map(m => m?.title)) 
   }, [movies]);
+
+  useEffect(() => {
+    console.log('Moiwefngjaoei', props.movies)
+    console.log('current index', currentIndex)
+    console.log('nextIndex', currentIndex + 2)
+  }, [currentIndex]);
 
   const save = async (newIMDBID, approved) => {
     const updateUser = User.copyOf(user, (updated) => {
@@ -57,7 +69,7 @@ function MovieCards(props) {
 
   return (
     <div className="card_container">
-      {movies.map((movies, index) => (
+      {movies.reverse().map((movies, index) => (
         <TinderCard
           className="swipe"
           key={movies.index}
