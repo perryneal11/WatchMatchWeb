@@ -6,20 +6,54 @@ import Header from "./Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieCards from "./movieCards";
 import { Link } from "react-router-dom";
+import ProfileScreen from "./Profile.js";
+import { User } from "./models";
 
 function App(props) {
   const [movieData, setMovieData] = React.useState([]);
   const [moviesDataForCards, setMovieDataForCards] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const user = props.user;
-  /*
-  const signOut = () => {
-    Auth.signOut()
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-  };
-  */
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const who = await Auth.currentAuthenticatedUser();
+
+      const dbUsers = await DataStore.query(User, (u) =>
+        u.awsID("eq", who.attributes.sub)
+      );
+
+      if (dbUsers.length < 1) {
+        const authUser = await Auth.currentAuthenticatedUser();
+        const newUser = new User({
+          Netflix: false,
+          Prime: false,
+          awsID: authUser.attributes.sub,
+          username: authUser.attributes.email,
+        });
+        await DataStore.save(newUser)
+          .then(function () {
+            console.log("New user created");
+            return setUser(newUser);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log("hit");
+        const dbUser = dbUsers[0];
+        setUser(dbUser);
+      }
+    };
+    getCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    console.log(user)
+  }, [user]);
+
+
 
   const fetchData = async () => {
     fetch("https://radiant-reaches-78484.herokuapp.com/getMovies", {
@@ -72,7 +106,6 @@ function App(props) {
     }
   };
 
-
   useEffect(() => {
     filterMovieData(movieData);
     sendMovieDataToCards(filteredData);
@@ -87,29 +120,25 @@ function App(props) {
 
   return (
     <div className="App">
-
       <Router>
-
-      <Header />
- 
+        <Header />
         <Routes>
-          <Route path="/profile" element={<h>hello from profile screen</h>} />
+          <Route
+            path="/profile"
+            element={<ProfileScreen user={user}></ProfileScreen>}
+          />
           <Route
             path="/"
-            element={<MovieCards 
-              movies={moviesDataForCards}
-              user ={user}
-            ></MovieCards>}
+            element={
+              <MovieCards movies={moviesDataForCards} user={user}></MovieCards>
+            }
           />
           <Route path="/friends" element={<h>hello from friends screen</h>} />
         </Routes>
       </Router>
-
-      {/* cards */}
-      {/* buttons */}
-
-      {/* friends screen */}
-      {/* watchmatch screen */}
+      <button onClick={props.signOut} className="signOutButton">
+        SignOut
+      </button>
     </div>
   );
 }
