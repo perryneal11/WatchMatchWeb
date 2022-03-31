@@ -122,6 +122,7 @@ function App(props) {
     <div className="App">
       <Router>
         <Header />
+        {user && 
         <Routes>
           <Route
             path="/profile"
@@ -135,6 +136,7 @@ function App(props) {
           />
           <Route path="/friends" element={<h>hello from friends screen</h>} />
         </Routes>
+}
       </Router>
       <button onClick={props.signOut} className="signOutButton">
         SignOut
