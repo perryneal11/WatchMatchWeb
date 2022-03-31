@@ -74,13 +74,13 @@ function MovieCards(props) {
           onCardLeftScreen={onCardLeftScreen}
         >
           <div className="card" key={movies.backdropPath}>
-            <h3>{movies.title}</h3>
+            <h3>{movies.title}{index}{currentIndex}</h3>
             <iframe
               key={movies.video}
               className="trailer"
               width="425"
               height="240"
-              src={`https://www.youtube.com/embed/${movies.video}?autoplay=${index == 2 || index == 3 ? 1 : 0}`}
+              src={`https://www.youtube.com/embed/${movies.video}?autoplay=${index == 3 && currentIndex == 0 || index == 2 && currentIndex >= 4 ? 1 : 0}`}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
