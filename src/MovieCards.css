@@ -1,20 +1,19 @@
-.card_container{
-    margin: 20px;
-    display: flex;
+.card_root{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
     justify-content: center;
-    margin: 10vh;
 }
 
 .card{
     background-color: black;
     display: flex;
+    flex: 3;
     flex-direction: column;
     align-items: center;
     position: relative;
-    width: 900px;
     padding: 3px;
     max-width: 85vw;
-    height: 80vh;
     border-radius: 20px;
     background-size: cover;
     background-position: center;
@@ -22,6 +21,7 @@
 
 .card > h3 {
     position: relative;
+    flex: 1;
     color: white;
     text-align: center;
     justify-content: center;
@@ -38,10 +38,12 @@
 
 .trailer{
     justify-content: center;
+    flex: 1;
 }
 
-
-
-.swipe{
-    position: absolute;
+.swipe {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    z-index: 2;
 }

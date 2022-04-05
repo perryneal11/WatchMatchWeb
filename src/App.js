@@ -7,7 +7,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieCards from "./movieCards";
 import { Link } from "react-router-dom";
 import ProfileScreen from "./Profile.js";
+import FindFriendsScreen from "./FindFriendsScreen.js";
+
 import { User } from "./models";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 function App(props) {
   const [movieData, setMovieData] = React.useState([]);
@@ -50,10 +54,8 @@ function App(props) {
   }, []);
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
   }, [user]);
-
-
 
   const fetchData = async () => {
     fetch("https://radiant-reaches-78484.herokuapp.com/getMovies", {
@@ -118,25 +120,87 @@ function App(props) {
     sendMovieDataToCards();
   }, []);
 
+  useEffect(() => {
+    console.log("movies", moviesDataForCards);
+  }, [moviesDataForCards]);
+
   return (
     <div className="App">
       <Router>
-        <Header />
-        {user && 
-        <Routes>
-          <Route
-            path="/profile"
-            element={<ProfileScreen user={user}></ProfileScreen>}
-          />
-          <Route
-            path="/"
-            element={
-              <MovieCards movies={moviesDataForCards} user={user}></MovieCards>
-            }
-          />
-          <Route path="/friends" element={<h>hello from friends screen</h>} />
-        </Routes>
-}
+        {user ? (
+          <>
+            <Routes>
+              <Route
+                path="/profile"
+                element={
+                  <div className="card_container">
+                <ProfileScreen user={user}></ProfileScreen>
+                </div>}
+              />
+
+              <Route
+                path="/findFriends"
+                element={
+                  <div className="card_container">
+                <FindFriendsScreen user={user}></FindFriendsScreen>
+                </div>}
+              />
+
+
+
+              <Route
+                path="/"
+                element={
+                  moviesDataForCards.length > 0 ? (
+                    <div className="card_container">
+                      <MovieCards
+                        className="cards"
+                        movies={moviesDataForCards}
+                        user={user}
+                      ></MovieCards>
+                    </div>
+                  ) : (
+                    <>
+                    <div className="card_container">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          height: '100%',
+                          width: '100%',
+                          justifyContent: "center",
+                          alignItems: 'center',
+                        }}
+                      >
+                        <CircularProgress />
+                      </Box>
+                      </div>
+                    </>
+                  )
+                }
+              />
+              <Route
+                path="/friends"
+                element=
+                
+                {
+                
+                  <div className="card_container">
+                <h>hello from friends screen</h>
+                </div>}
+              />
+            </Routes>
+            <div className="bottom_row">
+              <Header />
+            </div>
+          </>
+        ) : (
+          <>
+            {" "}
+            <Box sx={{ display: "flex" }}>
+              <CircularProgress />
+            </Box>
+          </>
+        )}
       </Router>
       <button onClick={props.signOut} className="signOutButton">
         SignOut

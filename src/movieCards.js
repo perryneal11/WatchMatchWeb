@@ -63,7 +63,7 @@ function MovieCards(props) {
   };
 
   return (
-    <div className="card_container">
+    <div className="card_root">
       
       {movies.reverse().map((movies, index) => (
         <TinderCard
