@@ -108,6 +108,27 @@ function App(props) {
     }
   };
 
+  function renderCards() {
+    return (moviesDataForCards.length > 0 ? (
+      <MovieCards
+        className="cards"
+        movies={moviesDataForCards}
+        user={user}
+      />
+    ) : (
+        <Box
+          sx={{
+            display: "flex",
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+          <CircularProgress />
+        </Box>
+    ))
+  }
+
   useEffect(() => {
     filterMovieData(movieData);
     sendMovieDataToCards(filteredData);
@@ -128,78 +149,19 @@ function App(props) {
     <div className="App">
       <Router>
         {user ? (
-          <>
+          <div className="card_container">
             <Routes>
-              <Route
-                path="/profile"
-                element={
-                  <div className="card_container">
-                <ProfileScreen user={user}></ProfileScreen>
-                </div>}
-              />
-
-              <Route
-                path="/findFriends"
-                element={
-                  <div className="card_container">
-                <FindFriendsScreen user={user}></FindFriendsScreen>
-                </div>}
-              />
-
-
-
-              <Route
-                path="/"
-                element={
-                  moviesDataForCards.length > 0 ? (
-                    <div className="card_container">
-                      <MovieCards
-                        className="cards"
-                        movies={moviesDataForCards}
-                        user={user}
-                      ></MovieCards>
-                    </div>
-                  ) : (
-                    <>
-                    <div className="card_container">
-                      <Box
-                        sx={{
-                          display: "flex",
-                          height: '100%',
-                          width: '100%',
-                          justifyContent: "center",
-                          alignItems: 'center',
-                        }}
-                      >
-                        <CircularProgress />
-                      </Box>
-                      </div>
-                    </>
-                  )
-                }
-              />
-              <Route
-                path="/friends"
-                element=
-                
-                {
-                
-                  <div className="card_container">
-                <h>hello from friends screen</h>
-                </div>}
-              />
+              <Route path="/profile" element={<ProfileScreen user={user}/>}/>
+              <Route path="/findFriends" element={<FindFriendsScreen user={user}/>}/>
+              <Route path="/" element={renderCards()}/>
+              <Route path="/friends" element={<h>hello from friends screen</h>}/>
             </Routes>
-            <div className="bottom_row">
-              <Header />
-            </div>
-          </>
+            <div className="bottom_row"><Header /></div>
+          </div>
         ) : (
-          <>
-            {" "}
             <Box sx={{ display: "flex" }}>
               <CircularProgress />
             </Box>
-          </>
         )}
       </Router>
       <button onClick={props.signOut} className="signOutButton">
