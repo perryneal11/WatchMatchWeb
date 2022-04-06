@@ -3,6 +3,7 @@ import TinderCard from "react-tinder-card";
 import { Auth, DataStore } from "aws-amplify";
 import "./MovieCards.css";
 import { User } from "./models";
+import { render } from "@testing-library/react";
 
 
 function MovieCards(props) {
@@ -42,6 +43,33 @@ function MovieCards(props) {
     console.log('movies', movies.map(m => m?.title)) 
   }, [movies]);
 
+  function renderCards() {
+    return(movies.reverse().map((movies, index) => (
+      <TinderCard
+        className="swipe"
+        key={movies.index}
+        preventSwipe={["up", "down"]}
+        onSwipe={onSwipe}
+        onCardLeftScreen={onCardLeftScreen}
+      >
+        <div className="card" key={movies.backdropPath}>
+          <h3>{movies.title}{index}{currentIndex}</h3>
+          <iframe
+            key={movies.video}
+            className="trailer"
+            width="425"
+            height="240"
+            src={`https://www.youtube.com/embed/${movies.video}?autoplay=${index == 3 && currentIndex == 0 || index == 2 && currentIndex >= 4 ? 1 : 0}`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            title="Embedded youtube"
+          />
+          <p>{movies.overview}</p>
+        </div>
+      </TinderCard>
+    )))
+  }
 
   const save = async (newIMDBID, approved) => {
     const updateUser = User.copyOf(user, (updated) => {
@@ -64,32 +92,7 @@ function MovieCards(props) {
 
   return (
     <div className="card_root">
-      
-      {movies.reverse().map((movies, index) => (
-        <TinderCard
-          className="swipe"
-          key={movies.index}
-          preventSwipe={["up", "down"]}
-          onSwipe={onSwipe}
-          onCardLeftScreen={onCardLeftScreen}
-        >
-          <div className="card" key={movies.backdropPath}>
-            <h3>{movies.title}{index}{currentIndex}</h3>
-            <iframe
-              key={movies.video}
-              className="trailer"
-              width="425"
-              height="240"
-              src={`https://www.youtube.com/embed/${movies.video}?autoplay=${index == 3 && currentIndex == 0 || index == 2 && currentIndex >= 4 ? 1 : 0}`}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title="Embedded youtube"
-            />
-            <p>{movies.overview}</p>
-          </div>
-        </TinderCard>
-      ))}
+      {renderCards()}
     </div>
   );
 }
