@@ -18,6 +18,9 @@ function ProfileScreen(props) {
             Prime:
             <input type = "checkbox"></input>
             <button>save</button>
+            <button onClick={props.signOut} className="signOutButton">
+        SignOut
+      </button>
 
 
         </div>

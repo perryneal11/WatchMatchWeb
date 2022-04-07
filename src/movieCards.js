@@ -3,14 +3,15 @@ import TinderCard from "react-tinder-card";
 import { Auth, DataStore } from "aws-amplify";
 import "./MovieCards.css";
 import { User } from "./models";
-import { render } from "@testing-library/react";
 
 
 function MovieCards(props) {
   const user = props.user;
+
   const [movies, setMovies] = useState([]);
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [currentMovie, setCurrentMovie] = React.useState();
+
 
   const onSwipe = (direction) => {
     //console.log('You swiped: ' + direction)
@@ -41,6 +42,7 @@ function MovieCards(props) {
     console.log('movies', movies.map(m => m?.title)) 
   }, [movies]);
 
+
   function renderCards() {
     return(movies.reverse().map((movies, index) => (
       <TinderCard
@@ -55,8 +57,7 @@ function MovieCards(props) {
           <iframe
             key={movies.video}
             className="trailer"
-            width="425"
-            height="240"
+            width="500px"
             src={`https://www.youtube.com/embed/${movies.video}?autoplay=${index == 3 && currentIndex == 0 || index == 2 && currentIndex >= 4 ? 1 : 0}`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -68,6 +69,7 @@ function MovieCards(props) {
       </TinderCard>
     )))
   }
+
 
   const save = async (newIMDBID, approved) => {
     const updateUser = User.copyOf(user, (updated) => {

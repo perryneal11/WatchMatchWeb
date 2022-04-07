@@ -1,22 +1,22 @@
 .App {
 
     display: flex;
-    flex: 8;
+    flex: 2;
     flex-direction: column;
-    background-color: blue;
     min-height: 100vh;
     
 }
 
-.card_container {
-    flex: 7;
-    background-color: purple;
+.root {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 }
 
 
 
 
 .bottom_row {
-    flex: 1;
     justify-self: flex-end;
 }

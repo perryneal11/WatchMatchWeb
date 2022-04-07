@@ -150,7 +150,7 @@ function App(props) {
     <div className="App">
       <Router>
         {user ? (
-          <div className="card_container">
+          <div className="root">
             <Routes>
               <Route path="/profile" element={<ProfileScreen user={user}/>}/>
               <Route path="/findFriends" element={<FindFriendsScreen user={user}/>}/>
@@ -168,9 +168,7 @@ function App(props) {
                     <div className="bottom_row"><Header /></div>
 
       </Router>
-      <button onClick={props.signOut} className="signOutButton">
-        SignOut
-      </button>
+
     </div>
   );
 }

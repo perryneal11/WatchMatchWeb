@@ -1,28 +1,33 @@
 .card_root{
-    display: grid;
-    flex: 7;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
+    display: flex;
     justify-content: center;
-    align-content: center;
-    background-color: brown;
-}
+    align-items: center;
+    min-height: 90vh;
+    min-width: 90vh;
 
+}
 
 .swipe {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 0;
-    grid-row-end: 2;
-    z-index: 2;
+    position: absolute;
+    top: 10vh;
+    left: 20vh;
+
 }
 
+
 .card{
-    background-color: black;
+    display: flex;
+    min-width: 55vh;
     flex-direction: column;
+    background-color: black;
     align-items: center;
+    justify-content: center;
+    align-content: space-between;
     padding: 3px;
     border-radius: 20px;
+    height: 75vh;
+    width: 80%;
+    flex: 3;
 
 }
 
@@ -44,6 +49,7 @@
 }
 
 .trailer{
+    align-items: center;
     justify-content: center;
     flex: 1;
 }
