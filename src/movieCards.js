@@ -8,11 +8,9 @@ import { render } from "@testing-library/react";
 
 function MovieCards(props) {
   const user = props.user;
-
   const [movies, setMovies] = useState([]);
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [currentMovie, setCurrentMovie] = React.useState();
-
 
   const onSwipe = (direction) => {
     //console.log('You swiped: ' + direction)

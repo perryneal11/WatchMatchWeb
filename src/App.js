@@ -5,13 +5,12 @@ import "@aws-amplify/ui-react/styles.css";
 import Header from "./Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieCards from "./movieCards";
-import { Link } from "react-router-dom";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
-
 import { User } from "./models";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import FriendsScreen from "./FriendsScreen"
 
 function App(props) {
   const [movieData, setMovieData] = React.useState([]);
@@ -130,6 +129,9 @@ function App(props) {
   }
 
   useEffect(() => {
+  }, []);
+
+  useEffect(() => {
     filterMovieData(movieData);
     sendMovieDataToCards(filteredData);
   }, [movieData]);
@@ -154,15 +156,18 @@ function App(props) {
               <Route path="/profile" element={<ProfileScreen user={user}/>}/>
               <Route path="/findFriends" element={<FindFriendsScreen user={user}/>}/>
               <Route path="/" element={renderCards()}/>
-              <Route path="/friends" element={<h>hello from friends screen</h>}/>
+              <Route path="/friends" element={<FriendsScreen user={user}> </FriendsScreen>}/>
+              <Route path="/watchMatch" element={renderCards()}/>
+
             </Routes>
-            <div className="bottom_row"><Header /></div>
           </div>
         ) : (
             <Box sx={{ display: "flex" }}>
               <CircularProgress />
             </Box>
         )}
+                    <div className="bottom_row"><Header /></div>
+
       </Router>
       <button onClick={props.signOut} className="signOutButton">
         SignOut

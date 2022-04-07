@@ -8,7 +8,22 @@ function ProfileScreen(props) {
         console.log()
     }, [user]);
 
-    return (<h1>hello {user.username} from profile screen</h1>);
+    return (
+        <div className="profile_root">
+        <img src={"https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png"} className="profile_pic"></img>
+
+            <input value = 'username'></input>
+            Netflix:
+            <input type = "checkbox"></input>
+            Prime:
+            <input type = "checkbox"></input>
+            <button>save</button>
+
+
+        </div>
+
+
+    );
 }
 
 export default ProfileScreen;
