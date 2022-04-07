@@ -110,7 +110,6 @@ function App(props) {
   function renderCards() {
     return (moviesDataForCards.length > 0 ? (
       <MovieCards
-        className="cards"
         movies={moviesDataForCards}
         user={user}
       />
