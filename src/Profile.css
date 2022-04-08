@@ -1,0 +1,31 @@
+.profile_root{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    height: 75vh;
+    width: 100vh
+}
+
+.username{
+    width: 80%;
+    height: 10%;
+    text-align: center;
+}
+
+.button {
+    height: 10%;
+    width: 80%;
+}
+
+.checkbox_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.profile_pic {
+    height: 25vh;
+    width: 25vh;
+}

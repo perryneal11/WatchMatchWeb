@@ -1,5 +1,6 @@
 
 import { useState , useEffect} from "react";
+import './FindFriends.css'
 
 function FindFriendsScreen(props) {
     const user = props.user
@@ -11,7 +12,43 @@ function FindFriendsScreen(props) {
         },
     
         {
-          username: "steve",
+          username: "encheff",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+        {
+          username: "phil",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+        {
+          username: "sean",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+        {
+          username: "cinthia",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+        {
+          username: "mom",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+    
+        {
+          username: "mom",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+        {
+          username: "mom",
+          photo:
+            "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
+        },
+        {
+          username: "mom",
           photo:
             "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
         },
@@ -30,7 +67,7 @@ function FindFriendsScreen(props) {
             </div>
             <div clasName = 'results_container'>
             {results.map((f) => (
-        <div className = 'friends_container'>
+        <div className = 'result'>
           <img src={f.photo} className="profile_pic"></img>
 
           <p>{f.username}</p>

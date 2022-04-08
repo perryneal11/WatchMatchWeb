@@ -1,4 +1,50 @@
-.search_form_container {
+.find_friends_root {
     display: flex;
-    flex-direction: column;
+    flex: 2;
+    flex-direction: column;    
+    height: 75vh;
+    overflow: hidden;
+    min-height: min-content;
+
 }
+
+.header{
+    align-self: center;
+    margin: 3px;
+ }
+
+ .results_container {
+     min-height: min-content;
+     border-style: solid;
+     display: flex;
+     flex: 1;
+     flex-direction: column;
+     height: 500px;
+     width: '100%';
+     overflow: scroll;
+     justify-content: space-around safe;
+     padding: 10px;
+ }
+
+.result {
+    min-height: min-content;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    padding: 10px;
+    flex-direction: row;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: black;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 40px;
+}
+
+.profile_pic {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+
