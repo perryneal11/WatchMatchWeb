@@ -1,12 +1,10 @@
 .header { 
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px;
+    border-top: 1px;
+    border-top: solid;
     align-content: center;
-}
+    align-items: center;
+    background-color: lightgray;
 
-.header_icon {
-    padding: 1px;
-    height: 40px;
-    object-fit: contain;
 }

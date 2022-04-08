@@ -14,16 +14,14 @@ const Header = () => {
     <div className="header">
       <Link to="/">
         <TheaterComedyIcon
-          className="header_icon"
-          fontSize="large"
+          sx={{fontSize: 100} }
         ></TheaterComedyIcon>
       </Link>
 
       <Link to="/friends">
         <IconButton>
           <SlideshowIcon
-            className="header_icon"
-            fontSize="large"
+            sx={{fontSize: 100}}
           ></SlideshowIcon>
         </IconButton>
       </Link>
@@ -32,8 +30,7 @@ const Header = () => {
       <Link to="/findFriends">
         <IconButton>
           <GroupAddIcon
-            className="header_icon"
-            fontSize="large"
+            sx={{fontSize: 100}}
           ></GroupAddIcon>
         </IconButton>
       </Link>
@@ -44,8 +41,7 @@ const Header = () => {
       <Link to="/profile">
         <IconButton>
           <SettingsIcon
-            className="header_icon"
-            fontSize="large"
+            sx={{fontSize: 100}}
           ></SettingsIcon>
         </IconButton>
       </Link>

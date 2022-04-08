@@ -10,7 +10,7 @@ import FindFriendsScreen from "./FindFriendsScreen.js";
 import { User } from "./models";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import FriendsScreen from "./FriendsScreen"
+import FriendsScreen from "./FriendsScreen";
 
 function App(props) {
   const [movieData, setMovieData] = React.useState([]);
@@ -108,27 +108,24 @@ function App(props) {
   };
 
   function renderCards() {
-    return (moviesDataForCards.length > 0 ? (
-      <MovieCards
-        movies={moviesDataForCards}
-        user={user}
-      />
+    return moviesDataForCards.length > 0 ? (
+      <MovieCards movies={moviesDataForCards} user={user} />
     ) : (
-        <Box
-          sx={{
-            display: "flex",
-            height: "100%",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <CircularProgress />
-        </Box>
-    ))
+      <Box
+        sx={{
+          display: "flex",
+          height: "100%",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
   }
 
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     filterMovieData(movieData);
@@ -152,23 +149,28 @@ function App(props) {
         {user ? (
           <div className="root">
             <Routes>
-              <Route path="/profile" element={<ProfileScreen user={user}/>}/>
-              <Route path="/findFriends" element={<FindFriendsScreen user={user}/>}/>
-              <Route path="/" element={renderCards()}/>
-              <Route path="/friends" element={<FriendsScreen user={user}> </FriendsScreen>}/>
-              <Route path="/watchMatch" element={renderCards()}/>
-
+              <Route path="/profile" element={<ProfileScreen user={user} />} />
+              <Route
+                path="/findFriends"
+                element={<FindFriendsScreen user={user} />}
+              />
+              <Route path="/" element={renderCards()} />
+              <Route
+                path="/friends"
+                element={<FriendsScreen user={user}> </FriendsScreen>}
+              />
+              <Route path="/watchMatch" element={renderCards()} />
             </Routes>
           </div>
         ) : (
-            <Box sx={{ display: "flex" }}>
-              <CircularProgress />
-            </Box>
+          <Box sx={{ display: "flex" }}>
+            <CircularProgress />
+          </Box>
         )}
-                    <div className="bottom_row"><Header /></div>
-
+        <div className="bottom_row">
+          <Header />
+        </div>
       </Router>
-
     </div>
   );
 }

@@ -2,14 +2,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90vh;
-    min-width: 90vh;
+    min-height: 80vh;
+    min-width: 110vh;
 
 }
 
 .swipe {
     position: absolute;
-    top: 10vh;
+    top: 5vh;
     left: 20vh;
 
 }
