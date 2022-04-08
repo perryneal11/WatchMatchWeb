@@ -22,10 +22,12 @@ function App(props) {
   useEffect(() => {
     const getCurrentUser = async () => {
       const who = await Auth.currentAuthenticatedUser();
-
+      DataStore.clear();
       const dbUsers = await DataStore.query(User, (u) =>
         u.awsID("eq", who.attributes.sub)
       );
+
+      console.log('DATABASE USERS', dbUsers)
 
       if (dbUsers.length < 1) {
         const authUser = await Auth.currentAuthenticatedUser();
@@ -149,7 +151,7 @@ function App(props) {
         {user ? (
           <div className="root">
             <Routes>
-              <Route path="/profile" element={<ProfileScreen user={user} />} />
+              <Route path="/profile" element={<ProfileScreen user={user} signOut = {props.signOut}/>} />
               <Route
                 path="/findFriends"
                 element={<FindFriendsScreen user={user} />}
