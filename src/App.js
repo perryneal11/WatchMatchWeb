@@ -2,14 +2,14 @@ import "./App.css";
 import React, { useEffect, useState, useCallback } from "react";
 import { Auth, DataStore } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
-import Amplify from 'aws-amplify'
+import Amplify from "aws-amplify";
 import Header from "./Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieCards from "./movieCards";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
 import { User } from "./models";
-import config from './aws-exports.js'
+import config from "./aws-exports.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import FriendsScreen from "./FriendsScreen";
@@ -19,21 +19,22 @@ function App(props) {
   const [moviesDataForCards, setMovieDataForCards] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
-
-
-  
+  const [user, setUser] = useState(null)
+  const [authUser, setAuthUser] = useState(null)
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      await DataStore.clear()
-      const who = await Auth.currentAuthenticatedUser().then(async function (who) {
-        console.log('who', who.attributes.sub)
+
+      const who = await Auth.currentAuthenticatedUser().then(async function (
+        who
+      ) {
+        console.log("who", who.attributes.sub);
         const dbUsers = await DataStore.query(User, (u) =>
           u.awsID("eq", who.attributes.sub)
         ).then(async function (dbUsers) {
-          console.log('DATABASE USERS', dbUsers)
-          if (dbUsers.length < 1) {
+          console.log("DATABASE USERS", dbUsers);
+          if (dbUsers.length == 0 ) {
+            console.log("why", dbUsers, dbUsers.length, dbUsers.length > 0)
             const authUser = await Auth.currentAuthenticatedUser();
             const newUser = new User({
               Netflix: true,
@@ -51,23 +52,16 @@ function App(props) {
               });
           } else {
             const dbUser = dbUsers[0];
-            
             return setUser(dbUser);
           }
-        })
-
-      })
-
-
-      
-
-
+        });
+      });
     };
     getCurrentUser();
   }, []);
 
   useEffect(() => {
-    console.log('user changed',user);
+    console.log("user changed", user);
   }, [user]);
 
   const fetchData = async () => {
@@ -171,7 +165,10 @@ function App(props) {
         {user ? (
           <div className="root">
             <Routes>
-              <Route path="/profile" element={<ProfileScreen user={user} signOut = {props.signOut}/>} />
+              <Route
+                path="/profile"
+                element={<ProfileScreen user={user} signOut={props.signOut} />}
+              />
               <Route
                 path="/findFriends"
                 element={<FindFriendsScreen user={user} />}
