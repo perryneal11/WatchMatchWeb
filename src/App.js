@@ -21,43 +21,53 @@ function App(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
 
+
+  
+
   useEffect(() => {
     const getCurrentUser = async () => {
-      await DataStore.clear();
-      const who = await Auth.currentAuthenticatedUser();
-      const dbUsers = await DataStore.query(User, (u) =>
-        u.awsID("eq", who.attributes.sub)
-      );
+      await DataStore.clear()
+      const who = await Auth.currentAuthenticatedUser().then(async function (who) {
+        console.log('who', who.attributes.sub)
+        const dbUsers = await DataStore.query(User, (u) =>
+          u.awsID("eq", who.attributes.sub)
+        ).then(async function (dbUsers) {
+          console.log('DATABASE USERS', dbUsers)
+          if (dbUsers.length < 1) {
+            const authUser = await Auth.currentAuthenticatedUser();
+            const newUser = new User({
+              Netflix: true,
+              Prime: true,
+              awsID: authUser.attributes.sub,
+              username: authUser.attributes.email,
+            });
+            await DataStore.save(newUser)
+              .then(function () {
+                console.log("New user created");
+                return setUser(newUser);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            const dbUser = dbUsers[0];
+            
+            return setUser(dbUser);
+          }
+        })
 
-      console.log('DATABASE USERS', dbUsers)
+      })
 
-      if (dbUsers.length < 1) {
-        const authUser = await Auth.currentAuthenticatedUser();
-        const newUser = new User({
-          Netflix: true,
-          Prime: true,
-          awsID: authUser.attributes.sub,
-          username: authUser.attributes.email,
-        });
-        await DataStore.save(newUser)
-          .then(function () {
-            console.log("New user created");
-            return setUser(newUser);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        const dbUser = dbUsers[0];
-        
-        return setUser(dbUser);
-      }
+
+      
+
+
     };
     getCurrentUser();
   }, []);
 
   useEffect(() => {
-    console.log(user);
+    console.log('user changed',user);
   }, [user]);
 
   const fetchData = async () => {
@@ -144,7 +154,7 @@ function App(props) {
   }, []);
 
   useEffect(() => {
-    console.log("movies", moviesDataForCards);
+    //console.log("movies", moviesDataForCards);
   }, [moviesDataForCards]);
 
   useEffect(() => {

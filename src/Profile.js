@@ -18,7 +18,7 @@ function ProfileScreen(props) {
     const updateUser = User.copyOf(dbUser[0], (updated) => {
       updated.Prime = netflix;
       updated.Netflix = prime;
-      
+      updated.username = username;
     });
 
     await DataStore.save(updateUser).then(function () {
@@ -40,7 +40,9 @@ function ProfileScreen(props) {
         className="profile_pic"
       ></img>
 
-      <input className="username" defaultValue={username}></input>
+      <input className="username" defaultValue={username} onChange={(e) => {
+              setUsername(e.target.value);
+            }}></input>
 
       <div className="checkbox_container">
         <label>
