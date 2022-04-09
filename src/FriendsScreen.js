@@ -27,7 +27,6 @@ useEffect(() => {
           )
           .requestAccepted('eq', true),
       );
-            console.log('aweoifgjn', usersFriendships)
       const receivers = usersFriendships.map(f => f.Receiver);
       const senders = usersFriendships.map(f => f.Sender);
       const friends = receivers.concat(senders).filter(u => u.id != user.id);
@@ -38,8 +37,6 @@ useEffect(() => {
     getFriends()
   }, []);
 
-
-
   return (
     <div className="friends_root">
     <h1 className='header'>Your Friends</h1>
@@ -48,7 +45,7 @@ useEffect(() => {
         <div className = 'friends_container'>
           <img src={f.photo} className="profile_pic"></img>
           <p>{f.username}</p>
-          <Link to="/watchMatch">
+          <Link to ="/" state = {{friend: f}} >
             <PlayCircleIcon sx={{fontSize: 100}} className='play_icon'></PlayCircleIcon>
           </Link>
           </div>

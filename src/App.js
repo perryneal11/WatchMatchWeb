@@ -4,7 +4,7 @@ import { Auth, DataStore } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
 import Amplify from "aws-amplify";
 import Header from "./Header";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import MovieCards from "./movieCards";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
@@ -13,16 +13,24 @@ import config from "./aws-exports.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import FriendsScreen from "./FriendsScreen";
+import WatchMatchScreen from "./WatchMatchScreen";
 
 function App(props) {
+  
+
   const [movieData, setMovieData] = React.useState([]);
   const [moviesDataForCards, setMovieDataForCards] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null)
   const [authUser, setAuthUser] = useState(null)
+  const location = useLocation();
+  const state = location.state;
+  console.log("props", state)
+
 
   useEffect(() => {
+
     const getCurrentUser = async () => {
 
       const who = await Auth.currentAuthenticatedUser().then(async function (
@@ -65,6 +73,7 @@ function App(props) {
   }, [user]);
 
   const fetchData = async () => {
+    console.log("props", props)
     fetch("https://radiant-reaches-78484.herokuapp.com/getMovies", {
       method: "GET",
     })
@@ -133,7 +142,6 @@ function App(props) {
     );
   }
 
-  useEffect(() => {}, []);
 
   useEffect(() => {
     filterMovieData(movieData);
@@ -160,8 +168,10 @@ function App(props) {
   }, []);
 
   return (
+
+
     <div className="App">
-      <Router>
+      <>
         {user ? (
           <div className="root">
             <Routes>
@@ -178,7 +188,7 @@ function App(props) {
                 path="/friends"
                 element={<FriendsScreen user={user}> </FriendsScreen>}
               />
-              <Route path="/watchMatch" element={renderCards()} />
+              <Route path="/watchMatch" element={<WatchMatchScreen user = {user}></WatchMatchScreen>} />
             </Routes>
           </div>
         ) : (
@@ -189,7 +199,7 @@ function App(props) {
         <div className="bottom_row">
           <Header />
         </div>
-      </Router>
+      </>
     </div>
   );
 }
