@@ -1,63 +1,48 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./FriendsScreen.css";
 import { Link } from "react-router-dom";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import { DataStore } from '@aws-amplify/datastore';
+import { Friendship } from './models';
+
 
 function FriendsScreen(props) {
   const user = props.user;
-  const friends = [
-    {
-      username: "steve",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
+  const [friends, setFriends ] = useState([])
 
-    {
-      username: "encheff",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-    {
-      username: "phil",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-    {
-      username: "sean",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-    {
-      username: "cinthia",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-    {
-      username: "mom",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
 
-    {
-      username: "mom",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-    {
-      username: "mom",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-    {
-      username: "mom",
-      photo:
-        "https://villagesonmacarthur.com/wp-content/uploads/2020/12/Blank-Avatar.png",
-    },
-  ];
+useEffect(() => {
+  console.log('friends changed', friends)
+}, [friends]);
+
+  useEffect(() => {
+    async function getFriends(){
+      console.log('getting friends')
+      const usersFriendships = await DataStore.query(Friendship, f =>
+        f
+          .or(f =>
+            f
+              .friendshipSenderId('eq', user.id)
+              .friendshipReceiverId('eq', user.id),
+          )
+          .requestAccepted('eq', true),
+      );
+            console.log('aweoifgjn', usersFriendships)
+      const receivers = usersFriendships.map(f => f.Receiver);
+      const senders = usersFriendships.map(f => f.Sender);
+      const friends = receivers.concat(senders).filter(u => u.id != user.id);
+      const friendsNoDuplicates = [...new Set(friends)];
+      //setIsLoading(false);
+      return setFriends(friendsNoDuplicates);
+    };
+    getFriends()
+  }, []);
+
+
 
   return (
     <div className="friends_root">
-    <h className='header'>Your Friends</h>
+    <h1 className='header'>Your Friends</h1>
       <div className="friends_list_container">
       {friends.map((f) => (
         <div className = 'friends_container'>
