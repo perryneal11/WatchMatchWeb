@@ -39,7 +39,8 @@ function MovieCards(props) {
   }, [props.movies])
 
   useEffect(() => {
-    console.log('movies', movies.map(m => m?.title)) 
+    //console.log('movies', movies.map(m => m?.title)) 
+    console.log(movies[1])
   }, [movies]);
 
 
@@ -47,13 +48,13 @@ function MovieCards(props) {
     return(movies.reverse().map((movies, index) => (
       <TinderCard
         className="swipe"
-        key={movies.index}
+        key={movies.imdbID}
         preventSwipe={["up", "down"]}
         onSwipe={onSwipe}
         onCardLeftScreen={onCardLeftScreen}
       >
         <div className="card" key={movies.backdropPath}>
-          <h3>{movies.title}{index}{currentIndex}</h3>
+          <h3 key={movies.title}>{movies.title}{index}{currentIndex}</h3>
           <iframe
             key={movies.video}
             className="trailer"
@@ -64,7 +65,7 @@ function MovieCards(props) {
             allowFullScreen
             title="Embedded youtube"
           />
-          <p>{movies.overview}</p>
+          <p key={movies.overview}>{movies.overview}</p>
         </div>
       </TinderCard>
     )))
