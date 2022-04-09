@@ -4,7 +4,12 @@ import { Auth, DataStore } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
 import Amplify from "aws-amplify";
 import Header from "./Header";
-import { BrowserRouter as BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import MovieCards from "./movieCards";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
@@ -16,23 +21,19 @@ import FriendsScreen from "./FriendsScreen";
 import WatchMatchScreen from "./WatchMatchScreen";
 
 function App(props) {
-  
-
   const [movieData, setMovieData] = React.useState([]);
   const [moviesDataForCards, setMovieDataForCards] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null)
-  const [authUser, setAuthUser] = useState(null)
+  const [user, setUser] = useState(null);
+  const [authUser, setAuthUser] = useState(null);
   const location = useLocation();
   const state = location.state;
-  console.log("props", state)
-
+  console.log("props", state);
+  const [friend, setFriend] = useState(state?.friend)
 
   useEffect(() => {
-
     const getCurrentUser = async () => {
-
       const who = await Auth.currentAuthenticatedUser().then(async function (
         who
       ) {
@@ -41,8 +42,8 @@ function App(props) {
           u.awsID("eq", who.attributes.sub)
         ).then(async function (dbUsers) {
           console.log("DATABASE USERS", dbUsers);
-          if (dbUsers.length == 0 ) {
-            console.log("why", dbUsers, dbUsers.length, dbUsers.length > 0)
+          if (dbUsers.length == 0) {
+            console.log("why", dbUsers, dbUsers.length, dbUsers.length > 0);
             const authUser = await Auth.currentAuthenticatedUser();
             const newUser = new User({
               Netflix: true,
@@ -67,13 +68,9 @@ function App(props) {
     };
     getCurrentUser();
   }, []);
-
-  useEffect(() => {
-    console.log("user changed", user);
-  }, [user]);
-
+  
   const fetchData = async () => {
-    console.log("props", props)
+    console.log("props", props);
     fetch("https://radiant-reaches-78484.herokuapp.com/getMovies", {
       method: "GET",
     })
@@ -88,6 +85,64 @@ function App(props) {
   const sendMovieDataToCards = () => {
     setMovieDataForCards(movieData);
   };
+
+
+  function filterMovieDataByFriend() {
+    const combinedShows = [];
+    const usersShows = [];
+    const friendsShows = [];
+    if (friend.approvedContentIMDBID != null && user.approvedContentIMDBID != null) {
+      friend.friend.approvedContentIMDBID.forEach(o => {
+        //console.log("friend", o)
+        friendsShows.push(JSON.parse(o));
+        combinedShows.push(JSON.parse(o));
+      });
+  
+      user.approvedContentIMDBID.forEach(o => {
+        //console.log("user", o)
+        usersShows.push(JSON.parse(o));
+        combinedShows.push(JSON.parse(o));
+      });
+          //console.log("combined shows", combinedShows)
+
+    const usersShowsImdbids = usersShows.map(s => s.imdbID);
+    const friendsShowsImdbids = friendsShows.map(s => s.imdbID);
+    const combinedShowsImdbids = combinedShows.map(s => s.imdbID);
+    //console.log("combinedShowsImdbids",combinedShowsImdbids)
+    //console.log("usersShowsImdbids",usersShowsImdbids)
+    //console.log("friendsShowsImdbids",friendsShowsImdbids)
+
+    const combined = combinedShows.filter(
+      s =>
+        friendsShowsImdbids.includes(s.imdbID) &&
+        usersShowsImdbids.includes(s.imdbID),
+    );
+
+    //console.log("combined", combined, typeof combined)
+
+    if (
+      friendsShows != null ||
+      (friendsShows.length != 0 && usersShows != null) ||
+      usersShows.length != 0
+    ) {
+      const showsNoDuplicates = Array.from(new Set(combined.flat()));
+      //console.log('showsNoDuplicates', showsNoDuplicates, typeof showsNoDuplicates);
+
+      //showsNoDuplicates.forEach(item=>{
+      //  console.log(item, item != null)
+      //  console.log(item, item.length != 0)
+      //})
+
+      var showsNoDuplicatesNoEmpties = showsNoDuplicates.filter(
+        el => el != null && el.length != 0,
+      );
+      //console.log('showsNoDuplicatesNoEmpties', showsNoDuplicatesNoEmpties, typeof showsNoDuplicatesNoEmpties);
+      return setFilteredData(showsNoDuplicates);
+    } else return;
+  }
+  }
+
+
 
   const filterMovieData = () => {
     if (user) {
@@ -142,7 +197,6 @@ function App(props) {
     );
   }
 
-
   useEffect(() => {
     filterMovieData(movieData);
     sendMovieDataToCards(filteredData);
@@ -151,7 +205,14 @@ function App(props) {
   useEffect(() => {
     setIsLoading(true);
     fetchData();
-    filterMovieData(filteredData);
+
+    if(friend){
+      filterMovieDataByFriend()
+    }
+    else{
+      filterMovieData(filteredData);
+    }
+
     sendMovieDataToCards();
   }, []);
 
@@ -168,8 +229,6 @@ function App(props) {
   }, []);
 
   return (
-
-
     <div className="App">
       <>
         {user ? (
@@ -188,7 +247,10 @@ function App(props) {
                 path="/friends"
                 element={<FriendsScreen user={user}> </FriendsScreen>}
               />
-              <Route path="/watchMatch" element={<WatchMatchScreen user = {user}></WatchMatchScreen>} />
+              <Route
+                path="/watchMatch"
+                element={<WatchMatchScreen user={user}></WatchMatchScreen>}
+              />
             </Routes>
           </div>
         ) : (
