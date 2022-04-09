@@ -25,7 +25,7 @@ function MovieCards(props) {
   const onCardLeftScreen = (myIdentifier) => {
     if (currentIndex == 0){
       setCurrentIndex(prevIndex => (prevIndex + 4))
-      console.log('hit')
+      //console.log('hit')
     } else {
       setCurrentIndex(prevIndex => (prevIndex + 1))
     }
@@ -40,7 +40,7 @@ function MovieCards(props) {
 
   useEffect(() => {
     //console.log('movies', movies.map(m => m?.title)) 
-    console.log(movies[1])
+    //console.log(movies[1])
   }, [movies]);
 
 

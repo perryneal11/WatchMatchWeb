@@ -14,6 +14,8 @@ function ProfileScreen(props) {
   const dbUser = await DataStore.query(User, (u) =>
     u.awsID("eq", user.awsID)
   );
+
+  
   console.log(dbUser)
     const updateUser = User.copyOf(dbUser[0], (updated) => {
       updated.Prime = netflix;
