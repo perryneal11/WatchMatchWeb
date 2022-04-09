@@ -2,12 +2,14 @@ import "./App.css";
 import React, { useEffect, useState, useCallback } from "react";
 import { Auth, DataStore } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
+import Amplify from 'aws-amplify'
 import Header from "./Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieCards from "./movieCards";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
 import { User } from "./models";
+import config from './aws-exports.js'
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import FriendsScreen from "./FriendsScreen";
@@ -21,8 +23,8 @@ function App(props) {
 
   useEffect(() => {
     const getCurrentUser = async () => {
+      await DataStore.clear();
       const who = await Auth.currentAuthenticatedUser();
-      DataStore.clear();
       const dbUsers = await DataStore.query(User, (u) =>
         u.awsID("eq", who.attributes.sub)
       );
@@ -32,8 +34,8 @@ function App(props) {
       if (dbUsers.length < 1) {
         const authUser = await Auth.currentAuthenticatedUser();
         const newUser = new User({
-          Netflix: false,
-          Prime: false,
+          Netflix: true,
+          Prime: true,
           awsID: authUser.attributes.sub,
           username: authUser.attributes.email,
         });
@@ -46,9 +48,9 @@ function App(props) {
             console.log(err);
           });
       } else {
-        console.log("hit");
         const dbUser = dbUsers[0];
-        setUser(dbUser);
+        
+        return setUser(dbUser);
       }
     };
     getCurrentUser();
@@ -144,6 +146,14 @@ function App(props) {
   useEffect(() => {
     console.log("movies", moviesDataForCards);
   }, [moviesDataForCards]);
+
+  useEffect(() => {
+    DataStore.start().catch(() => {
+      DataStore.clear().then(() => {
+        DataStore.start();
+      });
+    });
+  }, []);
 
   return (
     <div className="App">
