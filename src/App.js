@@ -33,6 +33,7 @@ function App(props) {
   const [friend, setFriend] = useState(state?.friend)
 
   useEffect(() => {
+    //DataStore.clear()
     const getCurrentUser = async () => {
       const who = await Auth.currentAuthenticatedUser().then(async function (
         who

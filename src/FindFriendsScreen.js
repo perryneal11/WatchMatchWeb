@@ -12,15 +12,47 @@ function FindFriendsScreen(props) {
     const user = props.user
     const [results, setResults] = useState([])
     const [searchString, setSearchString] = useState("")
+    const [friendRequests, setFriendRequests] = useState([]);
 
 
     useEffect(() => {
-        console.log()
+        console.log('user', user.id)
     }, [user]);
+
+    useEffect(() => {
+      let mounted = true;
+      if (mounted) {
+        getfriendRequests();
+      } else {
+        console.log('mounting issue');
+      }
+  
+      return () => (mounted = false);
+    },[]);
+
+    const acceptFriendRequest = async friendRequest => {
+      //console.log(friendRequest);
+      await DataStore.save(
+        Friendship.copyOf(friendRequest, updated => {
+          updated.requestAccepted = true;
+        }),
+      );
+      alert('Friend Request Accepted');
+    };
+  
+    const getfriendRequests = async () => {
+      const friendRequests = await DataStore.query(Friendship, f =>
+        f.friendshipReceiverId('eq', user.awsID).requestAccepted('eq', false),
+      );
+      console.log('friend requests', friendRequests);
+      return setFriendRequests(friendRequests);
+    };
 
     useEffect(() => {
       console.log('searchString changed' , searchString)
     }, [searchString]);
+
+
 
 
     async function search() {
@@ -40,6 +72,7 @@ function FindFriendsScreen(props) {
     }
 
     async function addFriend(possibleFriend) {
+      //DataStore.clear()
       console.log('adding friend', possibleFriend)
       await DataStore.save(
         new Friendship({
