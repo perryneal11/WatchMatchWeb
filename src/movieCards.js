@@ -3,6 +3,7 @@ import TinderCard from "react-tinder-card";
 import { Auth, DataStore } from "aws-amplify";
 import "./MovieCards.css";
 import { User } from "./models";
+import { SwipeDown } from "@mui/icons-material";
 
 
 function MovieCards(props) {
@@ -13,14 +14,22 @@ function MovieCards(props) {
   const [currentMovie, setCurrentMovie] = React.useState();
 
 
-  const onSwipe = (direction) => {
-    //console.log('You swiped: ' + direction)
+  const swipe = (direction, movie) => {
+    console.log('You swiped: ' + direction + 'on' + movie.title)
     if (direction == 'left'){
-      //save(currentMovie, false);
+      save(movie, false);
     } else if (direction == 'right'){
-      //save(currentMovie, true);
+      save(movie, true);
     }
   }
+
+  useEffect(() => {
+    console.log('current index changed', currentIndex)
+  }, [currentIndex]);
+
+  useEffect(() => {
+    console.log('is current movie ', movies[currentIndex + 3])
+  }, [movies]);
   
   const onCardLeftScreen = (myIdentifier) => {
     if (currentIndex == 0){
@@ -50,7 +59,7 @@ function MovieCards(props) {
         className="swipe"
         key={movies.imdbID}
         preventSwipe={["up", "down"]}
-        onSwipe={onSwipe}
+        onSwipe={(dir) => swipe(dir, movies)}
         onCardLeftScreen={onCardLeftScreen}
       >
         <div className="card" key={movies.backdropPath}>
@@ -73,6 +82,7 @@ function MovieCards(props) {
 
 
   const save = async (newIMDBID, approved) => {
+    console.log('saving', newIMDBID, approved)
     const updateUser = User.copyOf(user, (updated) => {
       if (approved == true) {
         if (updated.approvedContentIMDBID == null) {
