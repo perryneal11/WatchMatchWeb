@@ -86,7 +86,21 @@ function FindFriendsScreen(props) {
     <div className="find_friends_root">
       <h1 className="header">Find Friends</h1>
       {friendRequests.length > 0 ? (
-        <p>{friendRequests.map((r) => r.Sender.username)}p</p>
+        <div clasName = 'friend_request_container'>
+        <div className = 'friend_request'>
+          {friendRequests.map((r) => 
+            <div>
+                          <p>{r.Sender.username}</p>
+            <button onClick={acceptFriendRequest(r)}>Accept</button>
+            </div>
+
+          )
+          }
+        </div>
+        </div>
+
+
+
       ) : (
         <></>
       )}
