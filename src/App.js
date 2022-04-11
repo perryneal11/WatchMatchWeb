@@ -1,8 +1,10 @@
 import "./App.css";
 import React, { useEffect, useState, useCallback } from "react";
-import { Auth, DataStore } from "aws-amplify";
+import { Auth } from "aws-amplify";
+import { DataStore } from '@aws-amplify/datastore';
+import { User } from './models';
 import "@aws-amplify/ui-react/styles.css";
-import Amplify from "aws-amplify";
+import {Amplify} from "aws-amplify";
 import Header from "./Header";
 import {
   BrowserRouter as BrowserRouter,
@@ -13,7 +15,6 @@ import {
 import MovieCards from "./movieCards";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
-import { User } from "./models";
 import config from "./aws-exports.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -33,7 +34,10 @@ function App(props) {
   const [friend, setFriend] = useState(state?.friend)
 
   useEffect(() => {
-    //DataStore.clear()
+    console.log('maeoirgna')
+    //Amplify.Logger.LOG_LEVEL = 'DEBUG'
+    DataStore.clear()
+
     const getCurrentUser = async () => {
       const who = await Auth.currentAuthenticatedUser().then(async function (
         who
@@ -235,6 +239,7 @@ function App(props) {
         {user ? (
           <div className="root">
             <Routes>
+            <Route path="/" element={renderCards()} />
               <Route
                 path="/profile"
                 element={<ProfileScreen user={user} signOut={props.signOut} />}
@@ -243,7 +248,7 @@ function App(props) {
                 path="/findFriends"
                 element={<FindFriendsScreen user={user} />}
               />
-              <Route path="/" element={renderCards()} />
+
               <Route
                 path="/friends"
                 element={<FriendsScreen user={user}> </FriendsScreen>}

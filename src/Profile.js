@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Profile.css";
 import { User } from "./models";
-import { Auth, DataStore } from "aws-amplify";
+import { DataStore } from "@aws-amplify/datastore";
 
 function ProfileScreen(props) {
   const user = props.user;
@@ -10,28 +10,31 @@ function ProfileScreen(props) {
   const [prime, setPrime] = useState(user.Prime);
 
   async function save() {
+    const dbUser = await DataStore.query(User, (u) =>
+      u.awsID("eq", user.awsID)
+    );
 
-  const dbUser = await DataStore.query(User, (u) =>
-    u.awsID("eq", user.awsID)
-  );
-
-  
-  console.log(dbUser)
+    console.log(dbUser);
     const updateUser = User.copyOf(dbUser[0], (updated) => {
       updated.Prime = netflix;
       updated.Netflix = prime;
       updated.username = username;
     });
 
-    await DataStore.save(updateUser).then(function () {
-        console.log('updated user', updateUser)
+    await DataStore.save(updateUser)
+      .then(function () {
+        console.log("updated user", updateUser);
         alert("User updated");
       })
       .catch((err) => {
         console.log(err);
       });
-    
   }
+
+  useEffect(() => {
+    //DataStore.clear()
+
+  }, []);
 
   return (
     <div className="profile_root">
@@ -42,9 +45,13 @@ function ProfileScreen(props) {
         className="profile_pic"
       ></img>
 
-      <input className="username" defaultValue={username} onChange={(e) => {
-              setUsername(e.target.value);
-            }}></input>
+      <input
+        className="username"
+        defaultValue={username}
+        onChange={(e) => {
+          setUsername(e.target.value);
+        }}
+      ></input>
 
       <div className="checkbox_container">
         <label>

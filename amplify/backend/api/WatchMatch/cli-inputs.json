@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "WatchMatch",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-b0df90b8-048a-432d-9595-59190b5898db/amplify/backend/api/WatchMatch/schema.graphql",
+    "gqlSchemaPath": "/Users/perryneal/Development/WatchMatchWeb/amplify/backend/api/WatchMatch/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",
@@ -17,7 +17,21 @@
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
-      }
+      },
+      "perModelResolutionStrategy": [
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "Friendship"
+        },
+        {
+          "resolutionStrategy": {
+            "type": "AUTOMERGE"
+          },
+          "entityName": "User"
+        }
+      ]
     }
   }
 }
