@@ -90,8 +90,8 @@ function FindFriendsScreen(props) {
         <div className = 'friend_request'>
           {friendRequests.map((r) => 
             <div>
-                          <p>{r.Sender.username}</p>
-            <button onClick={acceptFriendRequest(r)}>Accept</button>
+              <p>{r.Sender.username}</p>
+            <button onClick={(f) => acceptFriendRequest(r)}>Accept</button>
             </div>
 
           )
