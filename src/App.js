@@ -88,12 +88,13 @@ function App(props) {
 
 
   function filterMovieDataByFriend() {
-    console.log('hit')
+    console.log('user', user)
     const combinedShows = [];
     const usersShows = [];
     const friendsShows = [];
+    console.log(user)
     if (friend.approvedContentIMDBID != null && user.approvedContentIMDBID != null) {
-      friend.friend.approvedContentIMDBID.forEach(o => {
+      friend.approvedContentIMDBID.forEach(o => {
         //console.log("friend", o)
         friendsShows.push(JSON.parse(o));
         combinedShows.push(JSON.parse(o));
@@ -138,6 +139,7 @@ function App(props) {
         el => el != null && el.length != 0,
       );
       //console.log('showsNoDuplicatesNoEmpties', showsNoDuplicatesNoEmpties, typeof showsNoDuplicatesNoEmpties);
+      console.log('yay')
       return setFilteredData(showsNoDuplicates);
     } else return;
   }
@@ -199,6 +201,18 @@ function App(props) {
   }
 
   useEffect(() => {
+    console.log('awe;fm')
+    if(friend){
+      //filterMovieDataByFriend()
+    }
+
+  }, [friend]);
+
+  useEffect(() => {
+    console.log('why')
+    console.log('state', state?.friend)
+    setFriend(state?.friend)
+
     filterMovieData(movieData);
     sendMovieDataToCards(filteredData);
   }, [movieData]);
@@ -208,18 +222,32 @@ function App(props) {
     fetchData();
 
     if(friend){
-      filterMovieDataByFriend()
+      console.log('hit')
+      //filterMovieDataByFriend()
     }
     else{
+      console.log(friend)
       filterMovieData(filteredData);
     }
 
     sendMovieDataToCards();
   }, []);
 
+
+
+
   useEffect(() => {
     //console.log("movies", moviesDataForCards);
   }, [moviesDataForCards]);
+
+  useEffect(() => {
+    console.log('friend changed', friend)
+    
+  }, [friend]);
+
+  useEffect(() => {
+    console.log('user changed', user)
+  }, [user]);
 
   useEffect(() => {
     DataStore.start().catch(() => {
