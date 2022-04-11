@@ -15,7 +15,7 @@ function MovieCards(props) {
 
 
   const swipe = (direction, movie) => {
-    console.log('You swiped: ' + direction + 'on' + movie.title)
+    //console.log('You swiped: ' + direction + 'on' + movie.title)
     if (direction == 'left'){
       save(movie, false);
     } else if (direction == 'right'){
@@ -24,11 +24,11 @@ function MovieCards(props) {
   }
 
   useEffect(() => {
-    console.log('current index changed', currentIndex)
+    //console.log('current index changed', currentIndex)
   }, [currentIndex]);
 
   useEffect(() => {
-    console.log('is current movie ', movies[currentIndex + 3])
+    //console.log('is current movie ', movies[currentIndex + 3])
   }, [movies]);
   
   const onCardLeftScreen = (myIdentifier) => {
@@ -82,7 +82,7 @@ function MovieCards(props) {
 
 
   const save = async (newIMDBID, approved) => {
-    console.log('saving', newIMDBID, approved)
+    //console.log('saving', newIMDBID, approved)
     const updateUser = User.copyOf(user, (updated) => {
       if (approved == true) {
         if (updated.approvedContentIMDBID == null) {

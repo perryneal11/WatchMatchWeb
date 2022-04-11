@@ -30,7 +30,7 @@ function App(props) {
   const [authUser, setAuthUser] = useState(null);
   const location = useLocation();
   const state = location.state;
-  console.log("props", state);
+
   const [friend, setFriend] = useState(state?.friend)
 
   useEffect(() => {
@@ -41,13 +41,10 @@ function App(props) {
       const who = await Auth.currentAuthenticatedUser().then(async function (
         who
       ) {
-        console.log("who", who.attributes.sub);
         const dbUsers = await DataStore.query(User, (u) =>
           u.awsID("eq", who.attributes.sub)
         ).then(async function (dbUsers) {
-          console.log("DATABASE USERS", dbUsers);
           if (dbUsers.length == 0) {
-            console.log("why", dbUsers, dbUsers.length, dbUsers.length > 0);
             const authUser = await Auth.currentAuthenticatedUser();
             const newUser = new User({
               Netflix: true,
@@ -57,7 +54,7 @@ function App(props) {
             });
             await DataStore.save(newUser)
               .then(function () {
-                console.log("New user created");
+                alert("New user created");
                 return setUser(newUser);
               })
               .catch((err) => {
@@ -74,7 +71,6 @@ function App(props) {
   }, []);
   
   const fetchData = async () => {
-    console.log("props", props);
     fetch("https://radiant-reaches-78484.herokuapp.com/getMovies", {
       method: "GET",
     })
@@ -92,6 +88,7 @@ function App(props) {
 
 
   function filterMovieDataByFriend() {
+    console.log('hit')
     const combinedShows = [];
     const usersShows = [];
     const friendsShows = [];

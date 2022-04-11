@@ -15,7 +15,7 @@ function FindFriendsScreen(props) {
   const [friendRequests, setFriendRequests] = useState([]);
 
   useEffect(() => {
-    console.log("user", user.id);
+    //console.log("user", user.id);
   }, [user]);
 
   useEffect(() => {
@@ -40,15 +40,15 @@ function FindFriendsScreen(props) {
   };
 
   const getfriendRequests = async () => {
-    console.log("lookin 4", user.id);
+    //console.log("lookin 4", user.id);
     const friendRequests = await DataStore.query(Friendship).then((friendRequests) => {
-      console.log("friend requests?!?!?!?!?!?!?", friendRequests.map((f) => console.log(f.friendshipReceiverId, user.id)));
+      //console.log("friend requests?!?!?!?!?!?!?", friendRequests.map((f) => console.log(f.friendshipReceiverId, user.id)));
       return setFriendRequests(friendRequests.filter((f) => f.friendshipReceiverId === user.id && f.requestAccepted == false));
     });
   };
 
   useEffect(() => {
-    console.log("searchString changed", searchString);
+    //console.log("searchString changed", searchString);
   }, [searchString]);
 
   async function search() {
@@ -61,14 +61,14 @@ function FindFriendsScreen(props) {
     //remove self
     results = results.filter((r) => r.username != user.username);
 
-    console.log(results);
+    //console.log(results);
 
     setResults(results);
   }
 
   async function addFriend(possibleFriend) {
     //DataStore.clear()
-    console.log("adding friend", possibleFriend);
+    //console.log("adding friend", possibleFriend);
     await DataStore.save(
       new Friendship({
         requestAccepted: false,
@@ -79,7 +79,7 @@ function FindFriendsScreen(props) {
   }
 
   useEffect(() => {
-    console.log("friend requests changed", friendRequests);
+    //console.log("friend requests changed", friendRequests);
   }, [friendRequests]);
 
   return (

@@ -12,12 +12,12 @@ function FriendsScreen(props) {
 
 
 useEffect(() => {
-  console.log('friends changed', friends)
+  //console.log('friends changed', friends)
 }, [friends]);
 
   useEffect(() => {
     async function getFriends(){
-      console.log('getting friends')
+      //console.log('getting friends')
       const usersFriendships = await DataStore.query(Friendship, f =>
         f
           .or(f =>
@@ -42,9 +42,9 @@ useEffect(() => {
     <h1 className='header'>Your Friends</h1>
       <div className="friends_list_container">
       {friends.map((f) => (
-        <div className = 'friends_container'>
-          <img src={f.photo} className="profile_pic"></img>
-          <p>{f.username}</p>
+        <div key = {f.awsID} className = 'friends_container'>
+          <img key = {f.id} src={f.photo} className="profile_pic"></img>
+          <p key={f.username}>{f.username}</p>
           <Link to ="/" state = {{friend: f}} >
             <PlayCircleIcon sx={{fontSize: 100}} className='play_icon'></PlayCircleIcon>
           </Link>
