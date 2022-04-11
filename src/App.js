@@ -34,9 +34,8 @@ function App(props) {
   const [friend, setFriend] = useState(state?.friend)
 
   useEffect(() => {
-    console.log('maeoirgna')
     //Amplify.Logger.LOG_LEVEL = 'DEBUG'
-    DataStore.clear()
+    //DataStore.clear()
 
     const getCurrentUser = async () => {
       const who = await Auth.currentAuthenticatedUser().then(async function (
