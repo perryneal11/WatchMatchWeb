@@ -43,7 +43,7 @@ function FindFriendsScreen(props) {
     console.log("lookin 4", user.id);
     const friendRequests = await DataStore.query(Friendship).then((friendRequests) => {
       console.log("friend requests?!?!?!?!?!?!?", friendRequests.map((f) => console.log(f.friendshipReceiverId, user.id)));
-      return setFriendRequests(friendRequests.filter((f) => f.friendshipReceiverId === user.id));
+      return setFriendRequests(friendRequests.filter((f) => f.friendshipReceiverId === user.id && f.requestAccepted == false));
     });
   };
 
