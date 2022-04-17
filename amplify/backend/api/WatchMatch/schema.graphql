@@ -1,18 +1,16 @@
 type Friendship @model @auth(rules: [{allow: public}]) {
   id: ID!
-  requestAccepted: Boolean
-  Receiver: User! @hasOne
-  Sender: User! @hasOne
+  sender: User @hasOne
+  receiver: User @hasOne
 }
 
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
-  Netflix: Boolean
-  Prime: Boolean
-  approvedContentIMDBID: [AWSJSON]
-  unapprovedContentIMDBID: [AWSJSON]
-  friends: [String]
-  username: String!
-  awsID: String!
+  username: String
+  netflix: Boolean
+  prime: Boolean
+  approvedContentIMDBID: AWSJSON
+  unapprovedContentIMDBID: String
+  awsID: String
 }
-  
+ 

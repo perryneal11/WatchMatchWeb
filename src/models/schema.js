@@ -10,39 +10,32 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "requestAccepted": {
-                    "name": "requestAccepted",
+                "sender": {
+                    "name": "sender",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": {
+                        "model": "User"
+                    },
                     "isRequired": false,
-                    "attributes": []
-                },
-                "Receiver": {
-                    "name": "Receiver",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": "id",
-                        "targetName": "friendshipReceiverId"
-                    }
-                },
-                "Sender": {
-                    "name": "Sender",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": true,
                     "attributes": [],
                     "association": {
                         "connectionType": "HAS_ONE",
                         "associatedWith": "id",
                         "targetName": "friendshipSenderId"
+                    }
+                },
+                "receiver": {
+                    "name": "receiver",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": "id",
+                        "targetName": "friendshipReceiverId"
                     }
                 },
                 "createdAt": {
@@ -61,18 +54,18 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "friendshipReceiverId": {
-                    "name": "friendshipReceiverId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "friendshipSenderId": {
                     "name": "friendshipSenderId",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "friendshipReceiverId": {
+                    "name": "friendshipReceiverId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
                     "attributes": []
                 }
             },
@@ -111,15 +104,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "Netflix": {
-                    "name": "Netflix",
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "netflix": {
+                    "name": "netflix",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
                 },
-                "Prime": {
-                    "name": "Prime",
+                "prime": {
+                    "name": "prime",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
@@ -127,40 +127,23 @@ export const schema = {
                 },
                 "approvedContentIMDBID": {
                     "name": "approvedContentIMDBID",
-                    "isArray": true,
+                    "isArray": false,
                     "type": "AWSJSON",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
                 },
                 "unapprovedContentIMDBID": {
                     "name": "unapprovedContentIMDBID",
-                    "isArray": true,
-                    "type": "AWSJSON",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "friends": {
-                    "name": "friends",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "username": {
-                    "name": "username",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "awsID": {
                     "name": "awsID",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -208,5 +191,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "a754725c93e51494a286f38ed78bc2fb"
+    "version": "c913ad79e59c3f756f0f01629c0cd7bf"
 };
