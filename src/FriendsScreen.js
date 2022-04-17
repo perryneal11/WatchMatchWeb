@@ -20,8 +20,8 @@ function FriendsScreen(props) {
           )
           .requestAccepted('eq', true),
       );
-      const receivers = usersFriendships.map(f => f.Receiver);
-      const senders = usersFriendships.map(f => f.Sender);
+      const receivers = usersFriendships.map(f => f.receiver);
+      const senders = usersFriendships.map(f => f.sender);
       const friends = receivers.concat(senders).filter(u => u.id != user.id);
       const friendsNoDuplicates = [...new Set(friends)];
       return setFriends(friendsNoDuplicates);

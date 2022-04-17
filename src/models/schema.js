@@ -38,6 +38,13 @@ export const schema = {
                         "targetName": "friendshipReceiverId"
                     }
                 },
+                "requestAccepted": {
+                    "name": "requestAccepted",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -191,5 +198,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "c913ad79e59c3f756f0f01629c0cd7bf"
+    "version": "07558760d76f73bf60c487893de6d02b"
 };

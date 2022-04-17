@@ -6,8 +6,8 @@ import { DataStore } from "@aws-amplify/datastore";
 function ProfileScreen(props) {
   const user = props.user;
   const [username, setUsername] = useState(user.username);
-  const [netflix, setNetflix] = useState(user.Netflix);
-  const [prime, setPrime] = useState(user.Prime);
+  const [netflix, setNetflix] = useState(user.netflix);
+  const [prime, setPrime] = useState(user.prime);
 
   async function save() {
     const dbUser = await DataStore.query(User, (u) =>
@@ -16,8 +16,8 @@ function ProfileScreen(props) {
 
     console.log(dbUser);
     const updateUser = User.copyOf(dbUser[0], (updated) => {
-      updated.Prime = netflix;
-      updated.Netflix = prime;
+      updated.prime = netflix;
+      updated.netflix = prime;
       updated.username = username;
     });
 

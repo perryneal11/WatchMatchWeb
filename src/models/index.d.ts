@@ -16,6 +16,7 @@ export declare class Friendship {
   readonly id: string;
   readonly sender?: User | null;
   readonly receiver?: User | null;
+  readonly requestAccepted?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly friendshipSenderId?: string | null;

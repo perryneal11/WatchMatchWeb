@@ -72,8 +72,8 @@ function FindFriendsScreen(props) {
     await DataStore.save(
       new Friendship({
         requestAccepted: false,
-        Receiver: possibleFriend,
-        Sender: user,
+        receiver: possibleFriend,
+        sender: user,
       })
     );
   }
