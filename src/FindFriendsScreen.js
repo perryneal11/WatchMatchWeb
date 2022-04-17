@@ -7,6 +7,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import { DataStore } from "@aws-amplify/datastore";
 import { Friendship } from "./models";
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+
 
 function FindFriendsScreen(props) {
   const user = props.user;
@@ -61,6 +64,7 @@ function FindFriendsScreen(props) {
 
   return (
     <div className="find_friends_root">
+
       <h1 className="header">Find Friends</h1>
       {friendRequests.length > 0 ? (
         <div clasName = 'friend_request_container'>
@@ -68,7 +72,7 @@ function FindFriendsScreen(props) {
           {friendRequests.map((r) => 
             <div>
               <p>{r.Sender.username}</p>
-            <button onClick={(f) => acceptFriendRequest(r)}>Accept</button>
+            <Button onClick={(f) => acceptFriendRequest(r)}>Accept</Button>
             </div>
 
           )
@@ -82,12 +86,12 @@ function FindFriendsScreen(props) {
         <></>
       )}
       <div className="search_form_container">
-        <input
-          onChange={(t) => {
+
+<TextField id="outlined-basic" label="Outlined" variant="outlined"           onChange={(t) => {
             setSearchString(t.target.value);
-          }}
-        ></input>
-        <button onClick={search}>Search</button>
+          }}/>
+
+        <Button variant = "contained" onClick={search}>Search</Button>
       </div>
       <div className="results_container">
         {results.map((f) => (
@@ -101,7 +105,7 @@ function FindFriendsScreen(props) {
 
             <p key={f.username}>{f.username}</p>
             <IconButton onClick={() => addFriend(f)}>
-              <AddIcon sx={{ fontSize: 30 }}></AddIcon>
+              <AddIcon sx={{ fontSize: 70 }}></AddIcon>
             </IconButton>
           </div>
         ))}

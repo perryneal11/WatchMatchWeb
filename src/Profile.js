@@ -2,12 +2,17 @@ import { useState, useEffect } from "react";
 import "./Profile.css";
 import { User } from "./models";
 import { DataStore } from "@aws-amplify/datastore";
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Button from '@mui/material/Button';
+
 
 function ProfileScreen(props) {
   const user = props.user;
   const [username, setUsername] = useState(user.username);
   const [netflix, setNetflix] = useState(user.netflix);
   const [prime, setPrime] = useState(user.prime);
+  
 
   async function save() {
     const dbUser = await DataStore.query(User, (u) =>
@@ -54,33 +59,26 @@ function ProfileScreen(props) {
       ></input>
 
       <div className="checkbox_container">
-        <label>
-          Netflix:
-          <input
-            type="checkbox"
-            checked={netflix}
+
+        <FormControlLabel control={<Switch checked={netflix}
             onChange={(e) => {
               setNetflix(e.target.checked);
-            }}
-          ></input>
-        </label>
-        <label>
-          Prime:
-          <input
-            type="checkbox"
-            checked={prime}
+            }}/>} label="Netlfix" />
+
+
+<FormControlLabel control={<Switch checked={prime}
             onChange={(e) => {
               setPrime(e.target.checked);
-            }}
-          ></input>
-        </label>
+            }}/>} label="Prime:" />
+
+
       </div>
-      <button className="button" onClick={save}>
+      <Button variant="contained" className="button" onClick={save}>
         save
-      </button>
-      <button onClick={props.signOut} className="button">
+      </Button>
+      <Button variant="contained" onClick={props.signOut} className="button">
         SignOut
-      </button>
+      </Button>
     </div>
   );
 }
