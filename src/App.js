@@ -1,25 +1,22 @@
 import "./App.css";
 import React, { useEffect, useState, useCallback } from "react";
 import { Auth } from "aws-amplify";
-import { DataStore } from '@aws-amplify/datastore';
-import { User } from './models';
+import { DataStore } from "@aws-amplify/datastore";
+import { User } from "./models";
 import "@aws-amplify/ui-react/styles.css";
-import {Amplify} from "aws-amplify";
 import Header from "./Header";
-import {
-  BrowserRouter as BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import MovieCards from "./movieCards";
 import ProfileScreen from "./Profile.js";
 import FindFriendsScreen from "./FindFriendsScreen.js";
-import config from "./aws-exports.js";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import FriendsScreen from "./FriendsScreen";
 import WatchMatchScreen from "./WatchMatchScreen";
+
+//might needs
+//Amplify.Logger.LOG_LEVEL = 'DEBUG'
+//DataStore.clear()
 
 function App(props) {
   const [movieData, setMovieData] = React.useState([]);
@@ -27,16 +24,11 @@ function App(props) {
   const [filteredData, setFilteredData] = React.useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [authUser, setAuthUser] = useState(null);
   const location = useLocation();
   const state = location.state;
-
-  const [friend, setFriend] = useState(state?.friend)
+  const [friend, setFriend] = useState(state?.friend);
 
   useEffect(() => {
-    //Amplify.Logger.LOG_LEVEL = 'DEBUG'
-    //DataStore.clear()
-
     const getCurrentUser = async () => {
       const who = await Auth.currentAuthenticatedUser().then(async function (
         who
@@ -69,9 +61,9 @@ function App(props) {
     };
     getCurrentUser();
   }, []);
-  
+
   const fetchData = async () => {
-    fetch("https://radiant-reaches-78484.herokuapp.com/getMovies", {
+    fetch("https://watchmatchmovies.herokuapp.com/getMovies", {
       method: "GET",
     })
       .then((response) => response.json())
@@ -85,67 +77,6 @@ function App(props) {
   const sendMovieDataToCards = () => {
     setMovieDataForCards(movieData);
   };
-
-
-  function filterMovieDataByFriend() {
-    console.log('user', user)
-    const combinedShows = [];
-    const usersShows = [];
-    const friendsShows = [];
-    console.log(user)
-    if (friend.approvedContentIMDBID != null && user.approvedContentIMDBID != null) {
-      friend.approvedContentIMDBID.forEach(o => {
-        //console.log("friend", o)
-        friendsShows.push(JSON.parse(o));
-        combinedShows.push(JSON.parse(o));
-      });
-  
-      user.approvedContentIMDBID.forEach(o => {
-        //console.log("user", o)
-        usersShows.push(JSON.parse(o));
-        combinedShows.push(JSON.parse(o));
-      });
-          //console.log("combined shows", combinedShows)
-
-    const usersShowsImdbids = usersShows.map(s => s.imdbID);
-    const friendsShowsImdbids = friendsShows.map(s => s.imdbID);
-    const combinedShowsImdbids = combinedShows.map(s => s.imdbID);
-    //console.log("combinedShowsImdbids",combinedShowsImdbids)
-    //console.log("usersShowsImdbids",usersShowsImdbids)
-    //console.log("friendsShowsImdbids",friendsShowsImdbids)
-
-    const combined = combinedShows.filter(
-      s =>
-        friendsShowsImdbids.includes(s.imdbID) &&
-        usersShowsImdbids.includes(s.imdbID),
-    );
-
-    //console.log("combined", combined, typeof combined)
-
-    if (
-      friendsShows != null ||
-      (friendsShows.length != 0 && usersShows != null) ||
-      usersShows.length != 0
-    ) {
-      const showsNoDuplicates = Array.from(new Set(combined.flat()));
-      //console.log('showsNoDuplicates', showsNoDuplicates, typeof showsNoDuplicates);
-
-      //showsNoDuplicates.forEach(item=>{
-      //  console.log(item, item != null)
-      //  console.log(item, item.length != 0)
-      //})
-
-      var showsNoDuplicatesNoEmpties = showsNoDuplicates.filter(
-        el => el != null && el.length != 0,
-      );
-      //console.log('showsNoDuplicatesNoEmpties', showsNoDuplicatesNoEmpties, typeof showsNoDuplicatesNoEmpties);
-      console.log('yay')
-      return setFilteredData(showsNoDuplicates);
-    } else return;
-  }
-  }
-
-
 
   const filterMovieData = () => {
     if (user) {
@@ -184,7 +115,7 @@ function App(props) {
 
   function renderCards() {
     return moviesDataForCards.length > 0 ? (
-      <MovieCards movies={moviesDataForCards} user={user} />
+      <MovieCards movies={moviesDataForCards} user={user} doNothingFlag ={false}/>
     ) : (
       <Box
         sx={{
@@ -201,53 +132,16 @@ function App(props) {
   }
 
   useEffect(() => {
-    console.log('awe;fm')
-    if(friend){
-      //filterMovieDataByFriend()
-    }
-
-  }, [friend]);
-
-  useEffect(() => {
-    console.log('why')
-    console.log('state', state?.friend)
-    setFriend(state?.friend)
-
-    filterMovieData(movieData);
     sendMovieDataToCards(filteredData);
-  }, [movieData]);
+  }, [filteredData]);
 
   useEffect(() => {
     setIsLoading(true);
     fetchData();
-
-    if(friend){
-      console.log('hit')
-      //filterMovieDataByFriend()
-    }
-    else{
-      console.log(friend)
-      filterMovieData(filteredData);
-    }
-
-    sendMovieDataToCards();
-  }, []);
-
-
-
-
-  useEffect(() => {
-    //console.log("movies", moviesDataForCards);
-  }, [moviesDataForCards]);
-
-  useEffect(() => {
-    console.log('friend changed', friend)
-    
-  }, [friend]);
-
-  useEffect(() => {
-    console.log('user changed', user)
-  }, [user]);
+    setFriend(state?.friend);
+    filterMovieData(movieData);
+    sendMovieDataToCards(filteredData);
+  }, [movieData]);
 
   useEffect(() => {
     DataStore.start().catch(() => {
@@ -263,7 +157,7 @@ function App(props) {
         {user ? (
           <div className="root">
             <Routes>
-            <Route path="/" element={renderCards()} />
+              <Route path="/" element={renderCards()} />
               <Route
                 path="/profile"
                 element={<ProfileScreen user={user} signOut={props.signOut} />}
@@ -278,7 +172,7 @@ function App(props) {
                 element={<FriendsScreen user={user}> </FriendsScreen>}
               />
               <Route
-                path="/watchMatch"
+                path="/friends/watchMatch"
                 element={<WatchMatchScreen user={user}></WatchMatchScreen>}
               />
             </Routes>
