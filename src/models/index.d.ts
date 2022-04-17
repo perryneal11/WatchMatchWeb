@@ -27,11 +27,11 @@ export declare class Friendship {
 
 export declare class User {
   readonly id: string;
-  readonly username?: string | null;
+  readonly username: string;
   readonly netflix?: boolean | null;
   readonly prime?: boolean | null;
-  readonly approvedContentIMDBID?: string | null;
-  readonly unapprovedContentIMDBID?: string | null;
+  readonly approvedContentIMDBID?: (string | null)[] | null;
+  readonly unapprovedContentIMDBID?: (string | null)[] | null;
   readonly awsID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

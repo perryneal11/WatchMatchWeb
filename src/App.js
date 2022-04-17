@@ -39,8 +39,8 @@ function App(props) {
           if (dbUsers.length == 0) {
             const authUser = await Auth.currentAuthenticatedUser();
             const newUser = new User({
-              Netflix: true,
-              Prime: true,
+              netflix: true,
+              prime: true,
               awsID: authUser.attributes.sub,
               username: authUser.attributes.email,
             });

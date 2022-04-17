@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 import { BrowserRouter} from "react-router-dom";
 
 
@@ -15,7 +16,7 @@ Amplify.configure(awsExports);
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Authenticator>{({ signOut, user }) => <App signOut = {signOut}/>}</Authenticator>
+    <Authenticator >{({ signOut, user }) => <App signOut = {signOut}/>}</Authenticator>
     </BrowserRouter>
 
 

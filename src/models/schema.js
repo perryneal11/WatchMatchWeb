@@ -115,7 +115,7 @@ export const schema = {
                     "name": "username",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "netflix": {
@@ -134,17 +134,19 @@ export const schema = {
                 },
                 "approvedContentIMDBID": {
                     "name": "approvedContentIMDBID",
-                    "isArray": false,
+                    "isArray": true,
                     "type": "AWSJSON",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "unapprovedContentIMDBID": {
                     "name": "unapprovedContentIMDBID",
-                    "isArray": false,
-                    "type": "String",
+                    "isArray": true,
+                    "type": "AWSJSON",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "awsID": {
                     "name": "awsID",
@@ -198,5 +200,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "07558760d76f73bf60c487893de6d02b"
+    "version": "435492e3ea070b2cfbdce920521a550d"
 };
