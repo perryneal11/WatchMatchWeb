@@ -3,7 +3,6 @@ import "./FriendsScreen.css";
 import { Link } from "react-router-dom";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { DataStore } from '@aws-amplify/datastore';
-import { Friendship } from './models';
 
 function FriendsScreen(props) {
   const user = props.user;
@@ -11,20 +10,6 @@ function FriendsScreen(props) {
 
   useEffect(() => {
     async function getFriends(){
-      const usersFriendships = await DataStore.query(Friendship, f =>
-        f
-          .or(f =>
-            f
-              .friendshipSenderId('eq', user.id)
-              .friendshipReceiverId('eq', user.id),
-          )
-          .requestAccepted('eq', true),
-      );
-      const receivers = usersFriendships.map(f => f.receiver);
-      const senders = usersFriendships.map(f => f.sender);
-      const friends = receivers.concat(senders).filter(u => u.id != user.id);
-      const friendsNoDuplicates = [...new Set(friends)];
-      return setFriends(friendsNoDuplicates);
     };
     getFriends()
   }, []);

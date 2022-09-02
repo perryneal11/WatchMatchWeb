@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import TinderCard from "react-tinder-card";
 import { Auth, DataStore } from "aws-amplify";
 import "./MovieCards.css";
-import { User } from "./models";
 import { SwipeDown } from "@mui/icons-material";
 
 function MovieCards(props) {
@@ -16,9 +15,9 @@ function MovieCards(props) {
     console.log("help", doNothingFlag);
     if (doNothingFlag == false) {
       if (direction == "left") {
-        save(movie, false);
+        // save(movie, false);
       } else if (direction == "right") {
-        save(movie, true);
+        // save(movie, true);
       } else if (doNothingFlag == true) {
         console.log("we doing nothing", doNothingFlag);
       }
@@ -50,8 +49,10 @@ function MovieCards(props) {
 
   function renderCards() {
     if (movies.length > 0) {
+
+      
       return movies.reverse().map((movies, index) => (
-        
+       
         <TinderCard
           className="swipe"
           key={movies.imdbID}
@@ -62,8 +63,6 @@ function MovieCards(props) {
           <div className="card">
             <h3>
               {movies.title}
-              {index}
-              {currentIndex}
             </h3>
             <iframe
               className="trailer"
@@ -90,22 +89,7 @@ function MovieCards(props) {
   }
 
   const save = async (newIMDBID, approved) => {
-    const updateUser = User.copyOf(user, (updated) => {
-      if (approved == true) {
-        if (updated.approvedContentIMDBID == null) {
-          updated.approvedContentIMDBID = newIMDBID;
-        } else {
-          updated.approvedContentIMDBID = newIMDBID;
-        }
-      } else {
-        if (updated.unapprovedContentIMDBID == null) {
-          updated.unapprovedContentIMDBID = newIMDBID;
-        } else {
-          updated.unapprovedContentIMDBID = newIMDBID;
-        }
-      }
-    });
-    await DataStore.save(updateUser);
+
   };
 
   return <div className="card_root">{renderCards()}</div>;
