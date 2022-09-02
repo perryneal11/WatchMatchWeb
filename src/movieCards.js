@@ -54,7 +54,7 @@ function MovieCards(props) {
         
         <TinderCard
           className="swipe"
-          key={movies.id}
+          key={movies.imdbID}
           preventSwipe={["up", "down"]}
           onSwipe={(dir) => swipe(dir, movies)}
           onCardLeftScreen={onCardLeftScreen}
