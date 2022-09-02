@@ -3,23 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Amplify from "aws-amplify";
-import awsExports from "./aws-exports";
-import { Authenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-import { BrowserRouter} from "react-router-dom";
-
-
-
-Amplify.configure(awsExports);
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Authenticator >{({ signOut, user }) => <App signOut = {signOut}/>}</Authenticator>
+      <App />
     </BrowserRouter>
-
-
   </React.StrictMode>,
   document.getElementById("root")
 );

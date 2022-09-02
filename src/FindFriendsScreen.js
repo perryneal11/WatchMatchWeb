@@ -1,15 +1,9 @@
-import { ContactSupportOutlined } from "@mui/icons-material";
 import { useState, useEffect } from "react";
-
 import "./FindFriends.css";
-import { User } from "./models";
 import AddIcon from "@mui/icons-material/Add";
-import { IconButton } from "@mui/material";
-import { DataStore } from "@aws-amplify/datastore";
-import { Friendship } from "./models";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import IconButton from '@mui/material/IconButton';
 
 function FindFriendsScreen(props) {
   const user = props.user;
@@ -28,38 +22,21 @@ function FindFriendsScreen(props) {
   }, []);
 
   const acceptFriendRequest = async (friendRequest) => {
-    await DataStore.save(
-      Friendship.copyOf(friendRequest, (updated) => {
-        updated.requestAccepted = true;
-      })
-    );
     alert("Friend Request Accepted");
   };
 
   const getfriendRequests = async () => {
-    const friendRequests = await DataStore.query(Friendship).then((friendRequests) => {
-      return setFriendRequests(friendRequests.filter((f) => f.friendshipReceiverId === user.id && f.requestAccepted == false));
-    });
+
   };
 
 
   async function search() {
-    var results = await DataStore.query(User, (u) =>
-      u.username("contains", searchString)
-    );
-    results = results.filter((r) => r.username != user.username);
-    setResults(results);
+
   }
 
   async function addFriend(possibleFriend) {
     alert("Friend request sent")
-    await DataStore.save(
-      new Friendship({
-        requestAccepted: false,
-        receiver: possibleFriend,
-        sender: user,
-      })
-    );
+
   }
 
   return (
