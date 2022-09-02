@@ -1,9 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState, useCallback } from "react";
-import { Auth } from "aws-amplify";
-import { DataStore } from "@aws-amplify/datastore";
-import { User } from "./models";
-import "@aws-amplify/ui-react/styles.css";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { Routes, Route, useLocation } from "react-router-dom";
 import MovieCards from "./movieCards";
@@ -13,12 +9,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import FriendsScreen from "./FriendsScreen";
 import WatchMatchScreen from "./WatchMatchScreen";
-
-//might needs
-//Amplify.Logger.LOG_LEVEL = 'DEBUG'
-//DataStore.clear()
+import movies from "./movies.js"
 
 function App(props) {
+
   const [movieData, setMovieData] = React.useState([]);
   const [moviesDataForCards, setMovieDataForCards] = React.useState([]);
   const [filteredData, setFilteredData] = React.useState([]);
@@ -28,90 +22,18 @@ function App(props) {
   const state = location.state;
   const [friend, setFriend] = useState(state?.friend);
 
-  useEffect(() => {
-    const getCurrentUser = async () => {
-      const who = await Auth.currentAuthenticatedUser().then(async function (
-        who
-      ) {
-        const dbUsers = await DataStore.query(User, (u) =>
-          u.awsID("eq", who.attributes.sub)
-        ).then(async function (dbUsers) {
-          if (dbUsers.length == 0) {
-            const authUser = await Auth.currentAuthenticatedUser();
-            const newUser = new User({
-              netflix: true,
-              prime: true,
-              awsID: authUser.attributes.sub,
-              username: authUser.attributes.email,
-            });
-            await DataStore.save(newUser)
-              .then(function () {
-                alert("New user created");
-                return setUser(newUser);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          } else {
-            const dbUser = dbUsers[0];
-            return setUser(dbUser);
-          }
-        });
-      });
-    };
-    getCurrentUser();
-  }, []);
-
-  const fetchData = async () => {
-    fetch("https://watchmatchmovies.herokuapp.com/getMovies", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setMovieData(data);
-        setIsLoading(false);
-      })
-      .catch((err) => {});
-  };
 
   const sendMovieDataToCards = () => {
-    setMovieDataForCards(movieData);
+    setMovieDataForCards(movies.results);
   };
 
   const filterMovieData = () => {
-    if (user) {
-      const likedMovies = [];
-      if (user.approvedContentIMDBID) {
-        user.approvedContentIMDBID.forEach((o) => {
-          likedMovies.push(JSON.parse(o));
-        });
-      }
-
-      const likedMoviesimdbids = likedMovies.map((m) => m.imdbID);
-
-      const dislikedMovies = [];
-
-      if (user.unapprovedContentIMDBID) {
-        user.unapprovedContentIMDBID.forEach((o) => {
-          dislikedMovies.push(JSON.parse(o));
-        });
-      }
-
-      const dislikedMoviesimdbids = dislikedMovies.map((m) => m.imdbID);
-
-      if (likedMovies != null && dislikedMovies != null) {
-        return setFilteredData(
-          movieData.filter(
-            (item) =>
-              !likedMoviesimdbids.includes(item.imdbID) &&
-              !dislikedMoviesimdbids.includes(item.imdbID)
-          )
-        );
-      } else {
-        return setFilteredData(movieData);
-      }
-    }
+    sendMovieDataToCards(movies)
   };
+
+  useEffect(() => {
+    sendMovieDataToCards()
+  }, []);
 
   function renderCards() {
     return moviesDataForCards.length > 0 ? (
@@ -131,30 +53,10 @@ function App(props) {
     );
   }
 
-  useEffect(() => {
-    sendMovieDataToCards(filteredData);
-  }, [filteredData]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    fetchData();
-    setFriend(state?.friend);
-    filterMovieData(movieData);
-    sendMovieDataToCards(filteredData);
-  }, [movieData]);
-
-  useEffect(() => {
-    DataStore.start().catch(() => {
-      DataStore.clear().then(() => {
-        DataStore.start();
-      });
-    });
-  }, []);
 
   return (
     <div className="App">
       <>
-        {user ? (
           <div className="root">
             <Routes>
               <Route path="/" element={renderCards()} />
@@ -177,11 +79,10 @@ function App(props) {
               />
             </Routes>
           </div>
-        ) : (
-          <Box sx={{ display: "flex" }}>
-            <CircularProgress />
-          </Box>
-        )}
+         
+         
+         
+
         <div className="bottom_row">
           <Header />
         </div>
@@ -189,5 +90,13 @@ function App(props) {
     </div>
   );
 }
+
+/* (
+  <Box sx={{ display: "flex" }}>
+    <CircularProgress />
+  </Box>
+)}
+
+*/
 
 export default App;
